@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, FlatList, Platform, Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Platform, Button } from 'react-native';
 
 import { getIdeas } from '../firebase/firestore';
 
@@ -16,7 +16,9 @@ export default class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    getIdeas().then((ideas) => {this.setState({ideas})});
+    getIdeas().then((ideas) => {
+      this.setState({ideas});
+    });
   }
 
   render() {
@@ -28,12 +30,12 @@ export default class HomeScreen extends React.Component {
           keyExtractor={(idea) => idea.id}
           renderItem={({item}) => (
             <View style={styles.ideaContainer}>
-              <TouchableHighlight onPress={() => navigate('Form', { id: item.id })}>
+              <TouchableOpacity onPress={() => navigate('Form', { id: item.id })}>
                 <View style={styles.descriptionContainer}>
                   <Text style={styles.idea}>{item.title}</Text>
                   <Text>{item.description}</Text>
                 </View>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
             )}
           />
