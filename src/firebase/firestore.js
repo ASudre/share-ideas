@@ -62,6 +62,9 @@ function getIdeas() {
     });
     console.log(ideas);
     return ideas;
+  })
+  .catch(e => {
+    console.log(e);
   });
 }
 
