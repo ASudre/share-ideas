@@ -10,15 +10,11 @@ export default class HomeScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      ideas: [],
-    }
+    this.props.requestIdeas();
   }
 
-  componentDidMount() {
-    getIdeas().then((ideas) => {
-      this.setState({ideas});
-    });
+  componentWillUpdate() {
+    // this.props.requestIdeas();
   }
 
   render() {
@@ -26,7 +22,7 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.state.ideas}
+          data={this.props.ideas}
           keyExtractor={(idea) => idea.id}
           renderItem={({item}) => (
             <View style={styles.ideaContainer}>

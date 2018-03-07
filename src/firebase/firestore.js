@@ -24,10 +24,10 @@ function addIdea(idea) {
   });
 }
 
-function updateIdea(id, idea) {
-  db.collection('ideas').doc(id).update(idea)
+function updateIdea(idea) {
+  db.collection('ideas').doc(idea.id).update(idea)
   .then(function() {
-    console.log('Document written with ID: ', id);
+    console.log('Document written with ID: ', idea.id);
   })
   .catch(function(error) {
     console.error('Error adding document: ', error);
@@ -39,7 +39,11 @@ function getIdeaById(ideaId) {
   return db.collection('ideas').doc(ideaId).get()
   .then(doc => {
     if (doc.exists) {
-      return doc.data();
+      console.log(doc);
+      return {
+        id: doc.id,
+        ...doc.data(),
+      };
     } else {
       console.log("No such document!");
     }
@@ -60,7 +64,6 @@ function getIdeas() {
         ...doc.data(),
       }];
     });
-    console.log(ideas);
     return ideas;
   })
   .catch(e => {

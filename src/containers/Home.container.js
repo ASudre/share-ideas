@@ -1,22 +1,22 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 import HomeScreen from '../components/Home.component';
-import requestIdeas from '../actions/ideas.actions';
+import { getIdeas } from '../services/ideas.service'
 
 const mapDispatchToProps = dispatch =>
 ({
   requestIdeas: () => {
-    return dispatch(requestIdeas());
+    dispatch(getIdeas());
   },
 });
 
-const mapStateToProps = state =>
-({
-  ideas: state.ideas,
-});
+const mapStateToProps = state => {
+  return {
+    ideas: state.ideas,
+  };
+}
 
 /** **********************
 * Exports              *
 ************************
 */
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(HomeScreen));
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

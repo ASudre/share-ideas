@@ -1,8 +1,8 @@
 import React from 'react';
-import { TouchableHighlight, StyleSheet, Text, TextInput, View, Platform } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, TextInput, View, Platform } from 'react-native';
 import t from 'tcomb-form-native';
 
-import { getIdeaById, updateIdea } from '../firebase/firestore';
+import { getIdeaById } from '../firebase/firestore';
 
 const Email = t.refinement(t.String, function (email) {
   var emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -15,6 +15,7 @@ Email.getValidationErrorMessage = function (value, path, context) {
 
 Form = t.form.Form;
 Idea = t.struct({
+  id: t.String,
   email: Email,
   title: t.String,
   description: t.String,
@@ -23,6 +24,9 @@ Idea = t.struct({
 
 const options = {
   fields: {
+    id: {
+      hidden: true,
+    },
     email: {
       error: 'Please provide a valid email',
     },
@@ -34,7 +38,7 @@ const options = {
   },
 };
 
-export class FormView extends React.Component {
+export default class FormView extends React.Component {
   static navigationOptions = {
     title: 'Idea',
   };
@@ -52,18 +56,14 @@ export class FormView extends React.Component {
   onPress() {
     const updatedIdea = this.refs.form.getValue();
     if (updatedIdea) {
-      updateIdea(this.state.idea.id, { ...updatedIdea });
+      this.setState({ idea: updatedIdea });
+      this.props.updateIdea({ ...updatedIdea });
     }
   }
 
   componentDidMount() {
     getIdeaById(this.state.idea.id).then((idea) => {
-      this.setState({
-        idea: {
-          id: this.state.idea.id,
-          ...idea,
-        },
-      });
+      this.setState({ idea });
     });
   }
 
@@ -76,9 +76,13 @@ export class FormView extends React.Component {
           options={options}
           value={this.state.idea}
         />
-        <TouchableHighlight style={styles.button} onPress={() => this.onPress()} underlayColor='#99d9f4'>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => this.onPress()}
+          disabled={this.props.isUpdating}
+        >
           <Text style={styles.buttonText}>Save</Text>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -115,10 +119,9 @@ const styles = StyleSheet.create({
   },
   button: {
     height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
+    backgroundColor: 'black',
     borderWidth: 1,
-    borderRadius: 8,
+    borderRadius: 4,
     marginBottom: 10,
     alignSelf: 'stretch',
     justifyContent: 'center'
