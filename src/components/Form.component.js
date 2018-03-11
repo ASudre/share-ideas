@@ -79,9 +79,11 @@ export default class FormView extends React.Component {
         <TouchableOpacity
           style={styles.button}
           onPress={() => this.onPress()}
-          disabled={this.props.isUpdating}
+          disabled={this.props.saving}
         >
-          <Text style={styles.buttonText}>Save</Text>
+          <Text style={styles.buttonText}>{
+            this.props.saving ? 'Saving' : 'Save'
+          }</Text>
         </TouchableOpacity>
       </View>
     );

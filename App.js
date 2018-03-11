@@ -12,7 +12,7 @@ import HomeScreen from './src/containers/Home.container';
 import FormScreen from './src/containers/Form.container';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(reducer, { ideas: []}, composeEnhancers(
+const store = createStore(reducer, { ideas: {}, saving: false, loading: false }, composeEnhancers(
   applyMiddleware(thunk))
 );
 

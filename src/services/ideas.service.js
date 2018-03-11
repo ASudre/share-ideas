@@ -6,8 +6,17 @@ export function getIdeas() {
   return async dispatch => {
     dispatch(requestIdeas());
     const ideas = await getIdeasFromDB();
-    dispatch(receiveIdeas(ideas));
+    dispatch(receiveIdeas(buildIdeasMap(ideas)));
   };
+}
+
+function buildIdeasMap(ideas) {
+  return ideas.reduce((acc, idea) => {
+    return {
+      ...acc,
+      [idea.id]: idea,
+    };
+  }, {});
 }
 
 export function updateIdea(idea) {

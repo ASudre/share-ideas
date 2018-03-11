@@ -11,7 +11,7 @@ const mapDispatchToProps = dispatch =>
 
 const mapStateToProps = state => {
   return {
-    isUpdating: state.isUpdating,
+    saving: state.saving,
   };
 }
 

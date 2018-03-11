@@ -13,16 +13,12 @@ export default class HomeScreen extends React.Component {
     this.props.requestIdeas();
   }
 
-  componentWillUpdate() {
-    // this.props.requestIdeas();
-  }
-
   render() {
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.props.ideas}
+          data={Object.values(this.props.ideas)}
           keyExtractor={(idea) => idea.id}
           renderItem={({item}) => (
             <View style={styles.ideaContainer}>
