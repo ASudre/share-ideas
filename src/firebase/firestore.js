@@ -15,7 +15,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 function addIdea(idea) {
-  db.collection('ideas').add(idea)
+  return db.collection('ideas').add(idea)
   .then(function(docRef) {
     console.log('Document written with ID: ', docRef.id);
   })
@@ -25,7 +25,7 @@ function addIdea(idea) {
 }
 
 function updateIdea(idea) {
-  db.collection('ideas').doc(idea.id).update(idea)
+  return db.collection('ideas').doc(idea.id).update(idea)
   .then(function() {
     console.log('Document written with ID: ', idea.id);
   })
@@ -39,7 +39,6 @@ function getIdeaById(ideaId) {
   return db.collection('ideas').doc(ideaId).get()
   .then(doc => {
     if (doc.exists) {
-      console.log(doc);
       return {
         id: doc.id,
         ...doc.data(),
