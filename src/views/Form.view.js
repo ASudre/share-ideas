@@ -1,8 +1,9 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, Text, TextInput, View, Platform } from 'react-native';
 import t from 'tcomb-form-native';
+import { TouchableOpacity, StyleSheet, Text, TextInput, View, Platform } from 'react-native';
 
 import { getIdeaById } from '../firebase/firestore';
+import { Button } from '../components/Button';
 
 const Email = t.refinement(t.String, function (email) {
   var emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -53,18 +54,21 @@ export default class FormView extends React.Component {
     }
   }
 
-  onPress() {
-    const updatedIdea = this.refs.form.getValue();
-    if (updatedIdea) {
-      this.setState({ idea: updatedIdea });
-      this.props.updateIdea({ ...updatedIdea });
+  save() {
+    const ideaFormValues = this.refs.form.getValue();
+    if (ideaFormValues) {
+      this.setState({ idea: ideaFormValues });
+      this.props.updateIdea({ ...ideaFormValues });
     }
   }
 
   componentDidMount() {
-    getIdeaById(this.state.idea.id).then((idea) => {
-      this.setState({ idea });
-    });
+    const ideaId = this.state.idea.id;
+    if(ideaId) {
+      getIdeaById(ideaId).then((idea) => {
+        this.setState({ idea });
+      });
+    }
   }
 
   render() {
@@ -76,15 +80,7 @@ export default class FormView extends React.Component {
           options={options}
           value={this.state.idea}
         />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => this.onPress()}
-          disabled={this.props.saving}
-        >
-          <Text style={styles.buttonText}>{
-            this.props.saving ? 'Saving' : 'Save'
-          }</Text>
-        </TouchableOpacity>
+        <Button saving={this.props.saving} onPress={() => this.save()} />
       </View>
     );
   }
@@ -109,23 +105,4 @@ const styles = StyleSheet.create({
       }
     })
   },
-  title: {
-    fontSize: 30,
-    alignSelf: 'center',
-    marginBottom: 30
-  },
-  buttonText: {
-    fontSize: 18,
-    color: 'white',
-    alignSelf: 'center'
-  },
-  button: {
-    height: 36,
-    backgroundColor: 'black',
-    borderWidth: 1,
-    borderRadius: 4,
-    marginBottom: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center'
-  }
 });

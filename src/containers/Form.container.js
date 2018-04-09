@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import FormScreen from '../components/Form.component';
+import FormScreen from '../views/Form.view';
 import { updateIdea } from '../services/ideas.service'
 
 const mapDispatchToProps = dispatch =>

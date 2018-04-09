@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import HomeScreen from '../components/Home.component';
+import HomeScreen from '../views/Home.view';
 import { getIdeas } from '../services/ideas.service'
 
 const mapDispatchToProps = dispatch =>
