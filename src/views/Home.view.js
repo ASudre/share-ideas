@@ -28,26 +28,24 @@ export default class HomeScreen extends React.Component {
     const ideas = Object.values(this.props.ideas);
     return (
       <View style={styles.container}>
-        {!ideas.length ? (
-          <ActivityIndicator />
-        ) : (
-          <FlatList
-            data={ideas}
-            keyExtractor={idea => idea.id}
-            renderItem={({ item }) => (
-              <View style={styles.ideaContainer}>
-                <TouchableOpacity
-                  onPress={() => navigate('Form', { id: item.id })}
-                >
-                  <View style={styles.descriptionContainer}>
-                    <Text style={styles.ideaTitle}>{item.title}</Text>
-                    <Text>{item.description}</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            )}
-          />
-        )}
+        <FlatList
+          onRefresh={() => this.props.requestIdeas()}
+          refreshing={this.props.loading}
+          data={ideas}
+          keyExtractor={idea => idea.id}
+          renderItem={({ item }) => (
+            <View style={styles.ideaContainer}>
+              <TouchableOpacity
+                onPress={() => navigate('Form', { id: item.id })}
+              >
+                <View style={styles.descriptionContainer}>
+                  <Text style={styles.ideaTitle}>{item.title}</Text>
+                  <Text>{item.description}</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          )}
+        />
         <ActionButton
           buttonColor="rgba(231,76,60,1)"
           onPress={() => navigate('Form', { id: null })}

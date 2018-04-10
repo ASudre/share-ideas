@@ -12,6 +12,7 @@ const mapDispatchToProps = dispatch =>
 const mapStateToProps = state => {
   return {
     ideas: state.ideas,
+    loading: state.loading,
   };
 }
 
