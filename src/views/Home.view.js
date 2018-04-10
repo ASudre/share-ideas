@@ -9,6 +9,7 @@ import {
   Platform,
   Button
 } from 'react-native';
+import ActionButton from 'react-native-action-button';
 
 import { getIdeas } from '../firebase/firestore';
 
@@ -47,6 +48,10 @@ export default class HomeScreen extends React.Component {
             )}
           />
         )}
+        <ActionButton
+          buttonColor="rgba(231,76,60,1)"
+          onPress={() => navigate('Form', { id: null })}
+        />
       </View>
     );
   }
