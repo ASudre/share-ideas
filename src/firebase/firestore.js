@@ -27,10 +27,10 @@ function addIdea(idea) {
 function updateIdea(idea) {
   return db.collection('ideas').doc(idea.id).update(idea)
   .then(function(docRef) {
-    console.log('Document written with ID: ', idea.id);
+    console.log('Document updated with ID: ', idea.id);
   })
   .catch(function(error) {
-    console.error('Error adding document: ', error);
+    console.error('Error updating document: ', error);
   });
 }
 
@@ -40,8 +40,8 @@ function getIdeaById(ideaId) {
   .then(doc => {
     if (doc.exists) {
       return {
-        id: doc.id,
         ...doc.data(),
+        id: doc.id,
       };
     } else {
       console.log("No such document!");
