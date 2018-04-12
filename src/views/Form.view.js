@@ -9,6 +9,7 @@ import {
   View,
   Platform
 } from 'react-native';
+import { Container, Header, Left, Body, Right, Button as NativeButton, Icon, Title } from 'native-base';
 
 import { getIdeaById } from '../firebase/firestore';
 import { Button } from '../components/Button';
@@ -49,7 +50,14 @@ const options = {
 
 export default class FormView extends React.Component {
   static navigationOptions = {
-    title: 'Idea'
+    headerTitle: 'Idea',
+    headerRight: (
+      <NativeButton transparent onPress={
+        () => Alert.alert('To be implemented.')
+      }>
+        <Icon name='menu' />
+      </NativeButton>
+    ),
   };
 
   constructor(props) {
