@@ -58,7 +58,8 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e8e8e8'
+    backgroundColor: '#e8e8e8',
+    marginBottom: 8,
   },
   ideaTitle: {
     fontWeight: 'bold'
