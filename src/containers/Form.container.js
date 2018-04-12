@@ -1,11 +1,14 @@
 import { connect } from 'react-redux';
 import FormScreen from '../views/Form.view';
-import { updateIdea } from '../services/ideas.service'
+import { updateIdea, createIdea } from '../services/ideas.service'
 
 const mapDispatchToProps = dispatch =>
 ({
   updateIdea: (idea) => {
     dispatch(updateIdea(idea));
+  },
+  createIdea: (idea) => {
+    dispatch(createIdea(idea));
   },
 });
 

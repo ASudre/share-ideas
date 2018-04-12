@@ -1,6 +1,16 @@
-import { requestIdeas, receiveIdeas, requestIdeaUpdate, receiveIdeaUpdate } from '../actions/ideas.actions';
-import { getIdeas as getIdeasFromDB } from '../firebase/firestore';
-import { updateIdea as updateIdeaFromDB } from '../firebase/firestore';
+import {
+  requestIdeas,
+  receiveIdeas,
+  requestIdeaCreate,
+  receiveIdeaCreate,
+  requestIdeaUpdate,
+  receiveIdeaUpdate,
+} from '../actions/ideas.actions';
+import {
+  getIdeas as getIdeasFromDB,
+  updateIdea as updateIdeaFromDB,
+  addIdea,
+} from '../firebase/firestore';
 
 export function getIdeas() {
   return async dispatch => {
@@ -17,6 +27,17 @@ function buildIdeasMap(ideas) {
       [idea.id]: idea,
     };
   }, {});
+}
+
+export function createIdea(idea) {
+  return async dispatch => {
+    dispatch(requestIdeaCreate(idea));
+    const ideaId = await addIdea(idea);
+    dispatch(receiveIdeaCreate({
+      ...idea,
+      id: ideaId,
+    }));
+  };
 }
 
 export function updateIdea(idea) {

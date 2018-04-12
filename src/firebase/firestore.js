@@ -17,7 +17,7 @@ const db = firebase.firestore();
 function addIdea(idea) {
   return db.collection('ideas').add(idea)
   .then(function(docRef) {
-    console.log('Document written with ID: ', docRef.id);
+    return docRef.id;
   })
   .catch(function(error) {
     console.error('Error adding document: ', error);
@@ -26,7 +26,7 @@ function addIdea(idea) {
 
 function updateIdea(idea) {
   return db.collection('ideas').doc(idea.id).update(idea)
-  .then(function() {
+  .then(function(docRef) {
     console.log('Document written with ID: ', idea.id);
   })
   .catch(function(error) {
@@ -59,8 +59,8 @@ function getIdeas() {
     let ideas = [];
     querySnapshot.forEach(doc => {
       ideas = [...ideas, {
-        id: doc.id,
         ...doc.data(),
+        id: doc.id,
       }];
     });
     return ideas;

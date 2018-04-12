@@ -24,7 +24,7 @@ Email.getValidationErrorMessage = function(value, path, context) {
 
 Form = t.form.Form;
 Idea = t.struct({
-  id: t.String,
+  id: t.maybe(t.String),
   email: Email,
   title: t.String,
   description: t.String,
@@ -62,11 +62,19 @@ export default class FormView extends React.Component {
     };
   }
 
-  save() {
+  update() {
     const ideaFormValues = this.refs.form.getValue();
     if (ideaFormValues) {
       this.setState({ idea: ideaFormValues });
       this.props.updateIdea({ ...ideaFormValues });
+    }
+  }
+
+  create() {
+    const ideaFormValues = this.refs.form.getValue();
+    if (ideaFormValues) {
+      this.setState({ idea: ideaFormValues });
+      this.props.createIdea({ ...ideaFormValues });
     }
   }
 
@@ -88,9 +96,9 @@ export default class FormView extends React.Component {
           saving={this.props.saving}
           onPress={() => {
             if (idea.id) {
-              this.save();
+              this.update();
             } else {
-              Alert.alert('To be implemented');
+              this.create();
             }
           }}
         />
