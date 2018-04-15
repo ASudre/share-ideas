@@ -1,23 +1,20 @@
 import { connect } from 'react-redux';
 import HomeScreen from '../views/Home.view';
-import { getIdeas } from '../services/ideas.service'
+import { getIdeas } from '../services/ideas.service';
 
-const mapDispatchToProps = dispatch =>
-({
+const mapDispatchToProps = dispatch => ({
   requestIdeas: () => {
     dispatch(getIdeas());
   },
 });
 
-const mapStateToProps = state => {
-  return {
-    ideas: state.ideas,
-    loadingIdeas: state.loadingIdeas,
-  };
-}
+const mapStateToProps = state => ({
+  ideas: state.ideas,
+  loadingIdeas: state.loadingIdeas,
+});
 
 /** **********************
-* Exports              *
-************************
-*/
+ * Exports              *
+ ************************
+ */
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

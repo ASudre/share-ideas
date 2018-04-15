@@ -6,35 +6,35 @@ import {
   RECEIVE_IDEA_DELETE,
   REQUEST_IDEA_DELETE,
   RECEIVE_IDEA_CREATE,
-  REQUEST_IDEA_CREATE
+  REQUEST_IDEA_CREATE,
 } from '../actions/ideas.actions';
 
-export default function(
+export default function (
   state = {
     ideas: {},
     savingIdea: true,
     loadingIdeas: false,
-    deletingIdea: false
+    deletingIdea: false,
   },
-  action
+  action,
 ) {
   switch (action.type) {
     case REQUEST_IDEAS:
       return {
         ...state,
-        loadingIdeas: true
+        loadingIdeas: true,
       };
     case RECEIVE_IDEAS:
       return {
         ...state,
         ideas: action.ideas,
-        loadingIdeas: false
+        loadingIdeas: false,
       };
     case REQUEST_IDEA_UPDATE:
     case REQUEST_IDEA_CREATE:
       return {
         ...state,
-        savingIdea: true
+        savingIdea: true,
       };
     case RECEIVE_IDEA_UPDATE:
     case RECEIVE_IDEA_CREATE:
@@ -42,24 +42,24 @@ export default function(
         ...state,
         ideas: {
           ...state.ideas,
-          [action.idea.id]: action.idea
+          [action.idea.id]: action.idea,
         },
-        savingIdea: false
+        savingIdea: false,
       };
     case REQUEST_IDEA_DELETE:
       return {
         ...state,
         deletingIdea: true,
       };
-    case RECEIVE_IDEA_DELETE:
-      delete state.ideas[action.idea.id];
+    case RECEIVE_IDEA_DELETE: {
+      const newIdeas = { ...state.ideas };
+      delete newIdeas[action.idea.id];
       return {
         ...state,
-        ideas: {
-          ...state.ideas,
-        },
+        ideas: newIdeas,
         deletingIdea: false,
       };
+    }
     default:
       return state;
   }

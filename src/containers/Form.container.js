@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 import FormScreen from '../views/Form.view';
-import { updateIdea, createIdea, deleteIdea } from '../services/ideas.service'
+import { updateIdea, createIdea, deleteIdea } from '../services/ideas.service';
 
-const mapDispatchToProps = dispatch =>
-({
+const mapDispatchToProps = dispatch => ({
   updateIdea: (idea) => {
     dispatch(updateIdea(idea));
   },
@@ -15,15 +14,13 @@ const mapDispatchToProps = dispatch =>
   },
 });
 
-const mapStateToProps = state => {
-  return {
-    savingIdea: state.savingIdea,
-    deletingIdea: state.deletingIdea,
-  };
-}
+const mapStateToProps = state => ({
+  savingIdea: state.savingIdea,
+  deletingIdea: state.deletingIdea,
+});
 
 /** **********************
-* Exports              *
-************************
-*/
+ * Exports              *
+ ************************
+ */
 export default connect(mapStateToProps, mapDispatchToProps)(FormScreen);

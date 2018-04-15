@@ -15,25 +15,23 @@ import {
   addIdea,
 } from '../firebase/firestore';
 
+function buildIdeasMap(ideas) {
+  return ideas.reduce((acc, idea) => ({
+    ...acc,
+    [idea.id]: idea,
+  }), {});
+}
+
 export function getIdeas() {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch(requestIdeas());
     const ideas = await getIdeasFromDB();
     dispatch(receiveIdeas(buildIdeasMap(ideas)));
   };
 }
 
-function buildIdeasMap(ideas) {
-  return ideas.reduce((acc, idea) => {
-    return {
-      ...acc,
-      [idea.id]: idea,
-    };
-  }, {});
-}
-
 export function createIdea(idea) {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch(requestIdeaCreate(idea));
     const ideaId = await addIdea(idea);
     dispatch(receiveIdeaCreate({
@@ -44,7 +42,7 @@ export function createIdea(idea) {
 }
 
 export function updateIdea(idea) {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch(requestIdeaUpdate(idea));
     await updateIdeaFromDB(idea);
     dispatch(receiveIdeaUpdate(idea));
@@ -52,7 +50,7 @@ export function updateIdea(idea) {
 }
 
 export function deleteIdea(idea) {
-  return async dispatch => {
+  return async (dispatch) => {
     dispatch(requestIdeaDelete(idea));
     await deleteIdeaFromDB(idea);
     dispatch(receiveIdeaDelete(idea));
