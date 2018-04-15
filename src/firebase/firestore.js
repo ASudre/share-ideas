@@ -34,6 +34,15 @@ function updateIdea(idea) {
   });
 }
 
+function deleteIdea(idea) {
+  return db.collection('ideas').doc(idea.id).delete()
+  .then(function(docRef) {
+    console.log('Document deleted with ID: ', idea.id);
+  })
+  .catch(function(error) {
+    console.error('Error deleting document: ', error);
+  });
+}
 
 function getIdeaById(ideaId) {
   return db.collection('ideas').doc(ideaId).get()
@@ -75,4 +84,5 @@ export {
   getIdeaById,
   addIdea,
   updateIdea,
+  deleteIdea,
 }

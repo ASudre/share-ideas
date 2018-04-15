@@ -5,10 +5,13 @@ import {
   receiveIdeaCreate,
   requestIdeaUpdate,
   receiveIdeaUpdate,
+  requestIdeaDelete,
+  receiveIdeaDelete,
 } from '../actions/ideas.actions';
 import {
   getIdeas as getIdeasFromDB,
   updateIdea as updateIdeaFromDB,
+  deleteIdea as deleteIdeaFromDB,
   addIdea,
 } from '../firebase/firestore';
 
@@ -45,5 +48,13 @@ export function updateIdea(idea) {
     dispatch(requestIdeaUpdate(idea));
     await updateIdeaFromDB(idea);
     dispatch(receiveIdeaUpdate(idea));
+  };
+}
+
+export function deleteIdea(idea) {
+  return async dispatch => {
+    dispatch(requestIdeaDelete(idea));
+    await deleteIdeaFromDB(idea);
+    dispatch(receiveIdeaDelete(idea));
   };
 }

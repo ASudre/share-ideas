@@ -4,7 +4,7 @@ import { StyleSheet, Text } from 'react-native';
 
 export function Button(props) {
   return (
-    <NativeButton onPress={() => props.onPress()} disabled={props.saving} block>
+    <NativeButton onPress={() => props.onPress()} disabled={props.savingIdea} block>
       <Text style={styles.buttonText}>Save</Text>
     </NativeButton>
   );

@@ -4,6 +4,8 @@ export const REQUEST_IDEA_UPDATE = 'REQUEST_IDEA_UPDATE';
 export const RECEIVE_IDEA_UPDATE = 'RECEIVE_IDEA_UPDATE';
 export const REQUEST_IDEA_CREATE = 'REQUEST_IDEA_CREATE';
 export const RECEIVE_IDEA_CREATE = 'RECEIVE_IDEA_CREATE';
+export const REQUEST_IDEA_DELETE = 'REQUEST_IDEA_DELETE';
+export const RECEIVE_IDEA_DELETE = 'RECEIVE_IDEA_DELETE';
 
 export function requestIdeas() {
   return {
@@ -28,6 +30,20 @@ export function requestIdeaUpdate(idea) {
 export function receiveIdeaUpdate(idea) {
   return {
     type: RECEIVE_IDEA_UPDATE,
+    idea,
+  };
+}
+
+export function requestIdeaDelete(idea) {
+  return {
+    type: REQUEST_IDEA_DELETE,
+    idea,
+  };
+}
+
+export function receiveIdeaDelete(idea) {
+  return {
+    type: RECEIVE_IDEA_DELETE,
     idea,
   };
 }

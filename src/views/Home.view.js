@@ -15,7 +15,7 @@ import { getIdeas } from '../firebase/firestore';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    title: 'Home',
+    title: 'Home'
   };
 
   constructor(props) {
@@ -30,7 +30,7 @@ export default class HomeScreen extends React.Component {
       <View style={styles.container}>
         <FlatList
           onRefresh={() => this.props.requestIdeas()}
-          refreshing={this.props.loading}
+          refreshing={this.props.loadingIdeas}
           data={ideas}
           keyExtractor={idea => idea.id}
           renderItem={({ item }) => (
@@ -44,6 +44,11 @@ export default class HomeScreen extends React.Component {
                 </View>
               </TouchableOpacity>
             </View>
+          )}
+          ListEmptyComponent={() => (
+            <Text style={styles.noIdeaContainer}>
+              Start and create your ideas !!
+            </Text>
           )}
         />
         <ActionButton
@@ -63,6 +68,12 @@ const styles = StyleSheet.create({
   },
   ideaTitle: {
     fontWeight: 'bold'
+  },
+  noIdeaContainer: {
+    marginTop: 8,
+    marginRight: 8,
+    marginLeft: 8,
+    textAlign: 'center',
   },
   ideaContainer: {
     marginTop: 8,

@@ -9,7 +9,16 @@ import {
   View,
   Platform
 } from 'react-native';
-import { Container, Header, Left, Body, Right, Button as NativeButton, Icon, Title } from 'native-base';
+import {
+  Container,
+  Header,
+  Left,
+  Body,
+  Right,
+  Button as NativeButton,
+  Icon,
+  Title
+} from 'native-base';
 
 import { getIdeaById } from '../firebase/firestore';
 import { Button } from '../components/Button';
@@ -49,15 +58,16 @@ const options = {
 };
 
 export default class FormView extends React.Component {
-  static navigationOptions = {
-    headerTitle: 'Idea',
-    headerRight: (
-      <NativeButton transparent onPress={
-        () => Alert.alert('To be implemented.')
-      }>
-        <Icon name='menu' />
-      </NativeButton>
-    ),
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+    return {
+      headerTitle: params.title ? params.title : 'Idea',
+      headerRight: (params.deleteIdea ?
+        <NativeButton transparent onPress={() => params.deleteIdea()}>
+          <Icon name="md-trash" />
+        </NativeButton> : null
+      )
+    };
   };
 
   constructor(props) {
@@ -91,7 +101,18 @@ export default class FormView extends React.Component {
     if (ideaId) {
       getIdeaById(ideaId).then(idea => {
         this.setState({ idea });
+        this.props.navigation.setParams({
+          deleteIdea: () => this.props.deleteIdea(this.state.idea),
+          title: idea.title,
+        });
       });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { goBack } = this.props.navigation;
+    if(this.props.deletingIdea && !nextProps.deletingIdea) {
+      goBack();
     }
   }
 
@@ -101,7 +122,7 @@ export default class FormView extends React.Component {
       <View style={styles.container}>
         <Form ref="form" type={Idea} options={options} value={idea} />
         <Button
-          saving={this.props.saving}
+          savingIdea={this.props.savingIdea}
           onPress={() => {
             if (idea.id) {
               this.update();
