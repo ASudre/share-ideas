@@ -20,7 +20,7 @@ export type RequestIdeas = {
 };
 export type ReceiveIdeas = {
   type: 'RECEIVE_IDEAS',
-  ideas: Idea[],
+  ideas: {[string]: Idea},
 };
 export type RequestIdeaUpdate = {
   type: 'REQUEST_IDEA_UPDATE',

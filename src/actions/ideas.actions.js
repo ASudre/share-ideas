@@ -18,7 +18,7 @@ export function requestIdeas(): RequestIdeas {
   };
 }
 
-export function receiveIdeas(ideas: Idea[]): ReceiveIdeas {
+export function receiveIdeas(ideas: {[string]: Idea}): ReceiveIdeas {
   return {
     type: 'RECEIVE_IDEAS',
     ideas,

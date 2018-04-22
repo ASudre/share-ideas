@@ -19,7 +19,7 @@ import {
 
 import { type Idea } from '../types';
 
-function buildIdeasMap(ideas) {
+function buildIdeasMap(ideas: Idea[]): {[string]: Idea} {
   return ideas.reduce((acc, idea) => ({
     ...acc,
     [idea.id]: idea,
