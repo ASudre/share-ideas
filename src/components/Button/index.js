@@ -14,12 +14,13 @@ const styles = StyleSheet.create({
 type Props = {
   onPress: () => void,
   savingIdea: boolean,
+  text: string,
 };
 
 export default function Button(props: Props) {
   return (
     <NativeButton onPress={() => props.onPress()} disabled={props.savingIdea} block>
-      <Text style={styles.buttonText}>Save</Text>
+      <Text style={styles.buttonText}>{props.text}</Text>
     </NativeButton>
   );
 }

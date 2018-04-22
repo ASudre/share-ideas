@@ -3,6 +3,8 @@
 import {
   requestIdeas,
   receiveIdeas,
+  requestIdea,
+  receiveIdea,
   requestIdeaCreate,
   receiveIdeaCreate,
   requestIdeaUpdate,
@@ -12,6 +14,7 @@ import {
 } from '../actions/ideas.actions';
 import {
   getIdeas as getIdeasFromDB,
+  getIdeaById as getIdeaFromDB,
   updateIdea as updateIdeaFromDB,
   deleteIdea as deleteIdeaFromDB,
   addIdea,
@@ -31,6 +34,14 @@ export function getIdeas() {
     dispatch(requestIdeas());
     const ideas = await getIdeasFromDB();
     dispatch(receiveIdeas(buildIdeasMap(ideas)));
+  };
+}
+
+export function getIdea(ideaId: string) {
+  return async (dispatch: any) => {
+    dispatch(requestIdea());
+    const idea = await getIdeaFromDB(ideaId);
+    dispatch(receiveIdea(idea));
   };
 }
 

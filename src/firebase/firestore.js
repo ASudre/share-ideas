@@ -19,7 +19,7 @@ const firebaseConfig: Config = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-function addIdea(idea: Idea) {
+function addIdea(idea: Idea): Promise<string> {
   return db
     .collection('ideas')
     .add(idea)
@@ -29,7 +29,7 @@ function addIdea(idea: Idea) {
     });
 }
 
-function updateIdea(idea: Idea) {
+function updateIdea(idea: Idea): Promise<void> {
   return db
     .collection('ideas')
     .doc(idea.id)
@@ -42,7 +42,7 @@ function updateIdea(idea: Idea) {
     });
 }
 
-function deleteIdea(idea: Idea) {
+function deleteIdea(idea: Idea): Promise<void> {
   return db
     .collection('ideas')
     .doc(idea.id)
@@ -55,7 +55,7 @@ function deleteIdea(idea: Idea) {
     });
 }
 
-function getIdeaById(ideaId: string) {
+function getIdeaById(ideaId: string): Promise<Idea | null> {
   return db
     .collection('ideas')
     .doc(ideaId)
@@ -75,7 +75,7 @@ function getIdeaById(ideaId: string) {
     });
 }
 
-function getIdeas() {
+function getIdeas(): Promise<Idea[]> {
   return db
     .collection('ideas')
     .get()
@@ -94,6 +94,7 @@ function getIdeas() {
     })
     .catch((e) => {
       console.log(e);
+      return [];
     });
 }
 

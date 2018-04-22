@@ -5,12 +5,14 @@ import { type State, type Actions } from './../types';
 export default function (
   state: State = {
     ideas: {},
+    idea: null,
+    loadingIdea: false,
     savingIdea: true,
     loadingIdeas: false,
     deletingIdea: false,
   },
   action: Actions,
-) {
+): State {
   switch (action.type) {
     case 'REQUEST_IDEAS':
       return {
@@ -23,6 +25,17 @@ export default function (
         ideas: action.ideas,
         loadingIdeas: false,
       };
+    case 'REQUEST_IDEA':
+      return {
+        ...state,
+        loadingIdea: true,
+      };
+    case 'RECEIVE_IDEA':
+      return {
+        ...state,
+        idea: action.idea,
+        loadingIdea: false,
+      };
     case 'REQUEST_IDEA_UPDATE':
     case 'REQUEST_IDEA_CREATE':
       return {
@@ -33,6 +46,7 @@ export default function (
     case 'RECEIVE_IDEA_CREATE':
       return {
         ...state,
+        idea: action.idea,
         ideas: {
           ...state.ideas,
           [action.idea.id]: action.idea,

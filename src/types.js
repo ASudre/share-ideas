@@ -8,12 +8,14 @@ export type Idea = {
   link: string | null,
 }
 
-export type State = {
+export type State = {|
   ideas: {[string]: Idea},
+  idea: Idea | null,
+  loadingIdea: boolean;
   savingIdea: boolean,
   loadingIdeas: boolean,
   deletingIdea: boolean,
-}
+|}
 
 export type RequestIdeas = {
   type: 'REQUEST_IDEAS',
@@ -21,6 +23,13 @@ export type RequestIdeas = {
 export type ReceiveIdeas = {
   type: 'RECEIVE_IDEAS',
   ideas: {[string]: Idea},
+};
+export type RequestIdea = {
+  type: 'REQUEST_IDEA',
+};
+export type ReceiveIdea = {
+  type: 'RECEIVE_IDEA',
+  idea: Idea | null,
 };
 export type RequestIdeaUpdate = {
   type: 'REQUEST_IDEA_UPDATE',
@@ -50,6 +59,8 @@ export type ReceiveIdeaDelete = {
 export type Actions =
   | RequestIdeas
   | ReceiveIdeas
+  | RequestIdea
+  | ReceiveIdea
   | RequestIdeaUpdate
   | ReceiveIdeaUpdate
   | RequestIdeaCreate

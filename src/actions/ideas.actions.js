@@ -4,6 +4,8 @@ import {
   type Idea,
   type RequestIdeas,
   type ReceiveIdeas,
+  type RequestIdea,
+  type ReceiveIdea,
   type RequestIdeaUpdate,
   type ReceiveIdeaUpdate,
   type RequestIdeaCreate,
@@ -22,6 +24,19 @@ export function receiveIdeas(ideas: {[string]: Idea}): ReceiveIdeas {
   return {
     type: 'RECEIVE_IDEAS',
     ideas,
+  };
+}
+
+export function requestIdea(): RequestIdea {
+  return {
+    type: 'REQUEST_IDEA',
+  };
+}
+
+export function receiveIdea(idea: Idea | null): ReceiveIdea {
+  return {
+    type: 'RECEIVE_IDEA',
+    idea,
   };
 }
 
