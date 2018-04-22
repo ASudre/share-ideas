@@ -1,11 +1,14 @@
+// @flow
+
 import React from 'react';
-import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
-import { StyleSheet, View, Platform } from 'react-native';
-import { Button as NativeButton, Icon } from 'native-base';
+import { ActivityIndicator, StyleSheet, View, Platform, Alert } from 'react-native';
+import { Button as NativeButton, Icon, Toast } from 'native-base';
 
 import { getIdeaById } from '../firebase/firestore';
 import Button from '../components/Button';
+
+import { type Idea } from '../types';
 
 const Email = t.refinement(t.String, (email) => {
   // eslint-disable-next-line
@@ -18,7 +21,7 @@ Email.getValidationErrorMessage = function () {
 };
 
 const { Form } = t.form;
-const Idea = t.struct({
+const IdeaStruct = t.struct({
   id: t.maybe(t.String),
   email: Email,
   title: t.String,
@@ -63,8 +66,40 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class FormView extends React.Component {
-  static navigationOptions = ({ navigation }) => {
+type NavigationParams = {
+  id?: string | null,
+  deleteIdea: () => any | null,
+  title: string | null,
+}
+
+type Navigation = {
+  goBack: () => void,
+  setParams: NavigationParams => void,
+  state: {
+    params: NavigationParams,
+  },
+}
+
+type Props = {
+  createIdea: (idea: Idea) => void,
+  updateIdea: (idea: Idea) => void,
+  deleteIdea: (idea: {
+    id: string,
+  }) => void,
+  deletingIdea: boolean,
+  savingIdea: boolean,
+  navigation: Navigation,
+};
+
+type State = {
+  loaded: boolean,
+  idea: {
+    id: string | null,
+  },
+};
+
+export default class FormView extends React.Component<Props, State> {
+  static navigationOptions = ({ navigation }: { navigation: Navigation }) => {
     const { params } = navigation.state;
     return {
       headerTitle: params.title ? params.title : 'Idea',
@@ -76,12 +111,13 @@ export default class FormView extends React.Component {
     };
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     const { navigation: { state: { params } } } = this.props;
     this.state = {
+      loaded: !params.id,
       idea: {
-        id: params.id,
+        id: params.id ? params.id : null,
       },
     };
   }
@@ -90,9 +126,19 @@ export default class FormView extends React.Component {
     const ideaId = this.state.idea.id;
     if (ideaId) {
       getIdeaById(ideaId).then((idea) => {
-        this.setState({ idea }, () => {
+        this.setState({ idea, loaded: true }, () => {
           this.props.navigation.setParams({
-            deleteIdea: () => this.props.deleteIdea(this.state.idea),
+            deleteIdea: () => {
+              Alert.alert(
+                'Delete idea',
+                'Do you really want to delete ?',
+                [
+                  { text: 'Cancel', onPress: null, style: 'cancel' },
+                  { text: 'OK', onPress: () => this.props.deleteIdea(idea) },
+                ],
+                { cancelable: true },
+              );
+            },
             title: idea.title,
           });
         });
@@ -100,14 +146,21 @@ export default class FormView extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: Props) {
     const { goBack } = this.props.navigation;
-    if (this.props.deletingIdea && !nextProps.deletingIdea) {
+    if (this.props.savingIdea && !nextProps.savingIdea) {
+      Toast.show({
+        text: 'Idea saved',
+        duration: 3000,
+      });
+    }
+    if (!this.state.idea.id || (this.props.deletingIdea && !nextProps.deletingIdea)) {
       goBack();
     }
   }
 
-  update() {
+  form: Form = null;
+  update(): void {
     const ideaFormValues = this.form.getValue();
     if (ideaFormValues) {
       this.setState({ idea: ideaFormValues });
@@ -115,7 +168,7 @@ export default class FormView extends React.Component {
     }
   }
 
-  create() {
+  create(): void {
     const ideaFormValues = this.form.getValue();
     if (ideaFormValues) {
       this.setState({ idea: ideaFormValues });
@@ -124,45 +177,39 @@ export default class FormView extends React.Component {
   }
 
   render() {
-    const { idea } = this.state;
+    const { idea, loaded } = this.state;
     return (
-      <View style={styles.container}>
-        <Form
-          ref={(form) => {
-            this.form = form;
-          }}
-          type={Idea}
-          options={options}
-          value={idea}
-        />
-        <Button
-          savingIdea={this.props.savingIdea}
-          onPress={() => {
-            if (idea.id) {
-              this.update();
-            } else {
-              this.create();
-            }
-          }}
-        />
+      <View>
+        {loaded ? (
+          <View style={styles.container}>
+            <Form
+              ref={(form) => {
+                this.form = form;
+              }}
+              type={IdeaStruct}
+              options={options}
+              value={idea}
+            />
+            <Button
+              savingIdea={this.props.savingIdea}
+              onPress={() => {
+                if (idea.id) {
+                  this.update();
+                } else {
+                  this.create();
+                }
+              }}
+            />
+          </View>
+        ) : (
+          <ActivityIndicator
+            size="large"
+            style={{
+              marginTop: 20,
+            }}
+          />
+        )}
       </View>
     );
   }
 }
-
-FormView.propTypes = {
-  createIdea: PropTypes.func.isRequired,
-  updateIdea: PropTypes.func.isRequired,
-  deleteIdea: PropTypes.func.isRequired,
-  deletingIdea: PropTypes.bool.isRequired,
-  savingIdea: PropTypes.bool.isRequired,
-  navigation: PropTypes.shape({
-    goBack: PropTypes.func.isRequired,
-    setParams: PropTypes.func.isRequired,
-    state: PropTypes.shape({
-      params: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-      }).isRequired,
-    }).isRequired,
-  }).isRequired,
-};

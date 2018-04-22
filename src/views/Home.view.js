@@ -1,7 +1,10 @@
+// @flow
+
 import React from 'react';
-import PropTypes from 'prop-types';
 import { StyleSheet, Text, View, TouchableOpacity, FlatList, Platform } from 'react-native';
 import ActionButton from 'react-native-action-button';
+
+import { type Idea } from '../types';
 
 const styles = StyleSheet.create({
   container: {
@@ -42,12 +45,25 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class HomeView extends React.Component {
+type Props = {
+  requestIdeas: () => void,
+  ideas: Idea,
+  loadingIdeas: boolean,
+  navigation: {
+    navigate: (string, { id: string | null }) => void,
+  }
+}
+
+type State = {
+
+}
+
+export default class HomeView extends React.Component<Props, State> {
   static navigationOptions = {
     title: 'Home',
   };
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.props.requestIdeas();
   }
@@ -84,17 +100,3 @@ export default class HomeView extends React.Component {
     );
   }
 }
-
-HomeView.propTypes = {
-  requestIdeas: PropTypes.func.isRequired,
-  ideas: PropTypes.objectOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-  })).isRequired,
-  loadingIdeas: PropTypes.bool.isRequired,
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
-};

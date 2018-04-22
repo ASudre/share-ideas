@@ -1,3 +1,5 @@
+// @flow
+
 import { connect } from 'react-redux';
 import FormScreen from '../views/Form.view';
 import { updateIdea, createIdea, deleteIdea } from '../services/ideas.service';

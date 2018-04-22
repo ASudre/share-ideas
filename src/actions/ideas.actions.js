@@ -1,63 +1,68 @@
-export const REQUEST_IDEAS = 'REQUEST_IDEAS';
-export const RECEIVE_IDEAS = 'RECEIVE_IDEAS';
-export const REQUEST_IDEA_UPDATE = 'REQUEST_IDEA_UPDATE';
-export const RECEIVE_IDEA_UPDATE = 'RECEIVE_IDEA_UPDATE';
-export const REQUEST_IDEA_CREATE = 'REQUEST_IDEA_CREATE';
-export const RECEIVE_IDEA_CREATE = 'RECEIVE_IDEA_CREATE';
-export const REQUEST_IDEA_DELETE = 'REQUEST_IDEA_DELETE';
-export const RECEIVE_IDEA_DELETE = 'RECEIVE_IDEA_DELETE';
+// @flow
 
-export function requestIdeas() {
+import {
+  type Idea,
+  type RequestIdeas,
+  type ReceiveIdeas,
+  type RequestIdeaUpdate,
+  type ReceiveIdeaUpdate,
+  type RequestIdeaCreate,
+  type ReceiveIdeaCreate,
+  type RequestIdeaDelete,
+  type ReceiveIdeaDelete,
+} from '../types';
+
+export function requestIdeas(): RequestIdeas {
   return {
-    type: REQUEST_IDEAS,
+    type: 'REQUEST_IDEAS',
   };
 }
 
-export function receiveIdeas(ideas) {
+export function receiveIdeas(ideas: Idea[]): ReceiveIdeas {
   return {
-    type: RECEIVE_IDEAS,
+    type: 'RECEIVE_IDEAS',
     ideas,
   };
 }
 
-export function requestIdeaUpdate(idea) {
+export function requestIdeaUpdate(idea: Idea): RequestIdeaUpdate {
   return {
-    type: REQUEST_IDEA_UPDATE,
+    type: 'REQUEST_IDEA_UPDATE',
     idea,
   };
 }
 
-export function receiveIdeaUpdate(idea) {
+export function receiveIdeaUpdate(idea: Idea): ReceiveIdeaUpdate {
   return {
-    type: RECEIVE_IDEA_UPDATE,
+    type: 'RECEIVE_IDEA_UPDATE',
     idea,
   };
 }
 
-export function requestIdeaDelete(idea) {
+export function requestIdeaDelete(idea: Idea): RequestIdeaDelete {
   return {
-    type: REQUEST_IDEA_DELETE,
+    type: 'REQUEST_IDEA_DELETE',
     idea,
   };
 }
 
-export function receiveIdeaDelete(idea) {
+export function receiveIdeaDelete(idea: Idea): ReceiveIdeaDelete {
   return {
-    type: RECEIVE_IDEA_DELETE,
+    type: 'RECEIVE_IDEA_DELETE',
     idea,
   };
 }
 
-export function requestIdeaCreate(idea) {
+export function requestIdeaCreate(idea: Idea): RequestIdeaCreate {
   return {
-    type: REQUEST_IDEA_UPDATE,
+    type: 'REQUEST_IDEA_CREATE',
     idea,
   };
 }
 
-export function receiveIdeaCreate(idea) {
+export function receiveIdeaCreate(idea: Idea): ReceiveIdeaCreate {
   return {
-    type: RECEIVE_IDEA_UPDATE,
+    type: 'RECEIVE_IDEA_CREATE',
     idea,
   };
 }

@@ -1,3 +1,5 @@
+// @flow
+
 import { connect } from 'react-redux';
 import HomeScreen from '../views/Home.view';
 import { getIdeas } from '../services/ideas.service';

@@ -1,3 +1,5 @@
+// @flow
+
 import {
   requestIdeas,
   receiveIdeas,
@@ -15,6 +17,8 @@ import {
   addIdea,
 } from '../firebase/firestore';
 
+import { type Idea } from '../types';
+
 function buildIdeasMap(ideas) {
   return ideas.reduce((acc, idea) => ({
     ...acc,
@@ -23,15 +27,15 @@ function buildIdeasMap(ideas) {
 }
 
 export function getIdeas() {
-  return async (dispatch) => {
+  return async (dispatch: any) => {
     dispatch(requestIdeas());
     const ideas = await getIdeasFromDB();
     dispatch(receiveIdeas(buildIdeasMap(ideas)));
   };
 }
 
-export function createIdea(idea) {
-  return async (dispatch) => {
+export function createIdea(idea: Idea) {
+  return async (dispatch: any) => {
     dispatch(requestIdeaCreate(idea));
     const ideaId = await addIdea(idea);
     dispatch(receiveIdeaCreate({
@@ -41,16 +45,16 @@ export function createIdea(idea) {
   };
 }
 
-export function updateIdea(idea) {
-  return async (dispatch) => {
+export function updateIdea(idea: Idea) {
+  return async (dispatch: any) => {
     dispatch(requestIdeaUpdate(idea));
     await updateIdeaFromDB(idea);
     dispatch(receiveIdeaUpdate(idea));
   };
 }
 
-export function deleteIdea(idea) {
-  return async (dispatch) => {
+export function deleteIdea(idea: Idea) {
+  return async (dispatch: any) => {
     dispatch(requestIdeaDelete(idea));
     await deleteIdeaFromDB(idea);
     dispatch(receiveIdeaDelete(idea));
