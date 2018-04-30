@@ -4,7 +4,7 @@ import React from 'react';
 import thunk from 'redux-thunk';
 import { applyMiddleware, compose, createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { StackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import { Root } from 'native-base';
 
 import reducer from './src/reducers/ideas.reducer';
@@ -21,7 +21,7 @@ const store = createStore(
   composeEnhancers(applyMiddleware(thunk)),
 );
 
-const AppNavigator = StackNavigator({
+const AppNavigator = createStackNavigator({
   Home: { screen: HomeScreen },
   Form: { screen: FormScreen },
 });
