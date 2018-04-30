@@ -1,8 +1,9 @@
 // @flow
 
 import React from 'react';
-import { Button as NativeButton, Icon } from 'native-base';
 import { Alert } from 'react-native';
+import HeaderButtons from 'react-navigation-header-buttons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Form from '../components/Form';
 
@@ -42,9 +43,9 @@ export default class FormView extends React.Component<Props> {
     return {
       headerTitle: params.title ? params.title : 'Idea',
       headerRight: params.deleteIdea ? (
-        <NativeButton transparent onPress={() => params.deleteIdea()}>
-          <Icon name="md-trash" />
-        </NativeButton>
+        <HeaderButtons IconComponent={Ionicons} iconSize={23} >
+          <HeaderButtons.Item title="delete" iconName="md-trash" onPress={() => params.deleteIdea()} />
+        </HeaderButtons>
       ) : null,
     };
   };
@@ -76,7 +77,6 @@ export default class FormView extends React.Component<Props> {
                 },
               },
             ],
-            { cancelable: true },
           );
         },
         title: nextProps.idea && nextProps.idea.title ? nextProps.idea.title : 'Idea',
